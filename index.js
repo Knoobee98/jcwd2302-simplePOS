@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
-const port = 5000;
+// const port = 5000;
+
+const dotenv = require('dotenv')
+dotenv.config()
 
 app.use(express.json())
 
@@ -8,9 +11,10 @@ app.get('/', () => {
     console.log('Hello World!');
 })
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-})
+//import router
+const { userRouter } = require('./routers')
+app.use('/user', userRouter)
+
 
 // sequelize synchronous
 const Sequelize = require('sequelize')
@@ -24,4 +28,8 @@ Models.sequelize.sync({
     console.log('database is synchronized')
 }).catch(function (error){
     console.log(error, 'something went wrong with the database')
+})
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 })
