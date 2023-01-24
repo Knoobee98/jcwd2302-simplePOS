@@ -1,7 +1,5 @@
-const cashierController = require('./cashierController')
-const adminController = require('./adminController')
+const userController = require('./userController')
 
 module.exports = {
-    cashierController,
-    adminController
+    userController
 }
