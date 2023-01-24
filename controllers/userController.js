@@ -70,6 +70,18 @@ module.exports = {
         }
     },
 
+    keepLogin: (req, res) => {
+        try {
+            res.status(201).send({
+                isError: false,
+                message: 'keep login success',
+                data: null
+            })
+        } catch (error) {
+            
+        }
+    },
+
     addUser: async(req, res) => {
         const {username, email, password, role} = req.body
 
