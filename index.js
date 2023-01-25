@@ -12,8 +12,9 @@ app.get('/', () => {
 })
 
 //import router
-const { userRouter } = require('./routers')
+const { userRouter, productsRouter } = require('./routers')
 app.use('/user', userRouter)
+app.use('/products', productsRouter)
 
 
 // sequelize synchronous

@@ -84,19 +84,32 @@ module.exports = {
 
     addUser: async(req, res) => {
         const {username, email, password, role} = req.body
+        const t = await sequelize.transaction()
 
-        if(!username.length || !email.length || !password.length || !role.length) return res.status(404).send({
-            isError: true,
-            message: 'username, email, password, role is required',
-            data: null
-        })
-         
-        await users.create({username, email, password: await hashPassword(password), role})
+        try {
+            if(!username.length || !email.length || !password.length || !role.length) return res.status(404).send({
+                isError: true,
+                message: 'username, email, password, role is required',
+                data: null
+            })
+             
+            await users.create({id: uuidv4() ,username, email, password: await hashPassword(password), role}, {transaction: t})
 
-        res.status(201).send({
-            isError: false,
-            message: 'user created',
-            data: null
-        })
+            await t.commit()
+            res.status(201).send({
+                isError: false,
+                message: 'user created',
+                data: null
+            })
+        } catch (error) {
+            await t.rollback()
+            res.status(404).send({
+                isError: true,
+                message: error.message,
+                data: null
+            })
+        }
+
+        
     }
 }
